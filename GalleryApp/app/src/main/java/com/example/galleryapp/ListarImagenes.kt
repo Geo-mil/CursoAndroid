@@ -2,6 +2,7 @@ package com.example.galleryapp
 
 import android.content.ContentUris
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -51,6 +52,19 @@ class ListarImagenes () {
         }
 
         return imageList
+    }
+
+    //Rescalado de la imagen para ajustar a la UI
+    fun resizeImage(imagen: Bitmap): Bitmap {
+        val imageheight = imagen.height
+        val imageWidth = imagen.width
+        val targetH = 360
+        val targetW = 360
+        var scaleFactor: Int = (imageWidth / targetW).coerceAtMost(imageheight / targetH)
+
+        val resized = Bitmap.createScaledBitmap(imagen, imageWidth/scaleFactor,
+            imageheight/scaleFactor, true)
+        return resized
     }
 
 }

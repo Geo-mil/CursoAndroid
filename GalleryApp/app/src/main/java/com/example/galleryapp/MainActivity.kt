@@ -32,14 +32,11 @@ class MainActivity : AppCompatActivity() {
 
         val startcamera: ImageView = findViewById(R.id.cameraImage)
         startcamera.setOnClickListener {
-            //dispatchTakePictureIntent()
-            //openSomeActivityForResult()
+
             requestCamera()
         }
 
         requestRead()
-
-        //setRecycler()
 
     }
 
@@ -48,33 +45,16 @@ class MainActivity : AppCompatActivity() {
         //referenciar al RecyclerView de activity_main.xml
         val recyclerImages = findViewById<RecyclerView>(R.id.recyclerViewImages)
         //Queremos un recycler tipo rejilla con tres columnas
-        val gridLayoutManager = GridLayoutManager(this, 3)
+        val gridLayoutManager = GridLayoutManager(this, 2)
         recyclerImages.layoutManager = gridLayoutManager
         //instanciar el adapter
-        //val adapter = ImagesAdapter(ListarImagenes().listarImagenes(applicationContext))
-        val adapter = ImagesAdapter(listaDeImagenes)
+        val adapter = ImagesAdapter(listaDeImagenes, applicationContext)
         //asignar el adaptador a la vista
         recyclerImages.adapter = adapter
         //actualizar el adaptador con la lista de elementos
         //refadapter.submitList(listarImagenes())
     }
 
-/*    private val REQUEST_IMAGE_CAPTURE = 1
-//
-//    private fun dispatchTakePictureIntent() {
-//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-//            takePictureIntent.resolveActivity(packageManager)?.also {
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE, null)
-//
-//
-//            }
-//        }
-//        val cualquiera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)//.also { takePictureIntent ->
-//        if(cualquiera.resolveActivity(this.packageManager)!=null){
-//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
-//            }.launch(cualquiera)
-//        }
-//    }*/
 
     private fun getPhotoFile(fileName: String): File {
         val directoryStorage = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -130,58 +110,17 @@ class MainActivity : AppCompatActivity() {
     //Observables para ver si devolvemos
     var observingTakeImagenActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if(result.resultCode == Activity.RESULT_OK){
-            val data: Intent? = result.data
-            val takenPhoto = BitmapFactory.decodeFile(filePhoto.absolutePath)
 
+            val takenPhoto = BitmapFactory.decodeFile(filePhoto.absolutePath)
             saveImageToStorage(takenPhoto)
-            val resizedTakenPhoto = resizeImage(takenPhoto)
-            //binding.mainImageView.setImageBitmap(resizedTakenPhoto)
+            setRecycler(ListarImagenes().listarImagenes(applicationContext))
+
         } else {
             Toast.makeText(this,"127 + ${result.resultCode} + ${result.data}", Toast.LENGTH_SHORT).show()
         }
     }
 
-/*
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // There are no request codes
-            //val data: Intent? = result.data
-            val bitmap = intent?.extras?.get("data") as Bitmap
-            //doSomeOperations()
-            savePhotoToExternalStorage(bitmap.toString(),bitmap)
-        }
-    }
 
-    fun openSomeActivityForResult() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        resultLauncher.launch(intent)
-    }
-
-    private fun savePhotoToExternalStorage(displayName: String, bmp: Bitmap): Boolean {
-        val imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "$displayName.jpg")
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            put(MediaStore.Images.Media.WIDTH, bmp.width)
-            put(MediaStore.Images.Media.HEIGHT, bmp.height)
-        }
-        return try {
-            contentResolver.insert(imageCollection, contentValues)?.also { uri ->
-                Log.e("file path", File(uri.path.toString()).absolutePath)
-                contentResolver.openOutputStream(uri).use { outputStream ->
-                    if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)) {
-                        throw IOException("Couldn't save bitmap")
-                    }
-                }
-            } ?: throw IOException("Couldn't create MediaStore entry")
-            true
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        }
-    }
-*/
     private val PERMISSION_CODE_TAKE_PHOTO = 2
     fun requestCamera() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -198,21 +137,21 @@ class MainActivity : AppCompatActivity() {
 
     private val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
     fun requestRead() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(
                 this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
             )
+
         } else {
+
             val listallena = ListarImagenes().listarImagenes(applicationContext)
             if(listallena!=null) {
                 setRecycler(listallena)
             }
+
         }
     }
 
@@ -224,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Toast.makeText(this,"$requestCode", Toast.LENGTH_SHORT).show()
+
         when(requestCode){
 
             MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE -> {
@@ -248,30 +187,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-/*
-lateinit var currentPhotoPath: String
-
-@Throws(IOException::class)
-private fun createImageFile(): File {
-// Create an image file name
-//val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-val timeStamp: String = Date().time.toString()
-//val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-val storageDir: File? = getExternalStoragePublicDirectory(DIRECTORY_PICTURES)
-return File.createTempFile(
-"JPEG_${timeStamp}_", / * prefix * /
-".jpg", / * suffix * /
-storageDir / * directory * /
-).apply {
-// Save a file: path for use with ACTION_VIEW intents
-currentPhotoPath = absolutePath
-}
-}
-*/
-
 }
 
 
