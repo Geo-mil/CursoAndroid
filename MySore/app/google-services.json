@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1032613966710",
+    "project_id": "tiendacurso-64b9a",
+    "storage_bucket": "tiendacurso-64b9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032613966710:android:37e9caf006a1cbe0824057",
+        "android_client_info": {
+          "package_name": "com.example.mysore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032613966710-3utv653pprd327fu4amjhgi8fsvhqvcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxywGCjJxCudFiVSQPCaAILvPqnyGTYk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1032613966710-3utv653pprd327fu4amjhgi8fsvhqvcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
