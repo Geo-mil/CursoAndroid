@@ -1,41 +1,62 @@
 package com.example.mysore
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mysore.Adapter.StoreAdapter
+import com.example.mysore.Connection.APIStore
+import com.example.mysore.Interfaces.SupportFragmentManager
+import java.io.IOException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StoreMenuFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class StoreMenuFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val TAG = "Store Warning"
+    private lateinit var rootview: View
+    private lateinit var listener: SupportFragmentManager
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as StoreActivity
+        }catch (e: IOException){
+            Log.d(TAG,"onAttach es null")
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        APIStore().sacardatos()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store_menu, container, false)
+        rootview = inflater.inflate(R.layout.fragment_store_menu, container, false)
+
+        return rootview
+    }
+
+    fun setRecyclerView(){
+        val recyclerView = rootview.findViewById<RecyclerView>(R.id.store_recycler_view)
+        val adapter = StoreAdapter(APIStore().listaDeItems, this.requireContext())//aqui va la lista de digimones
+
+        adapter.setOnItemClickListener(object: StoreAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                listener.setFragment(ShoopingCarMenuFragment(),
+                                    position.toString(),
+                                    APIStore().listaDeItems[position].precio.toString())
+            }
+        })
+        recyclerView.adapter =  adapter
+        recyclerView.layoutManager = GridLayoutManager(this.context, 2)
     }
 
     companion object {
@@ -49,12 +70,9 @@ class StoreMenuFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             StoreMenuFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
             }
     }
 }

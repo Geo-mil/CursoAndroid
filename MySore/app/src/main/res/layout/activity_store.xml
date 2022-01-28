@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StoreActivity">
+    tools:context=".StoreActivity"
+    style="@style/Theme.MySore">
 
     <Button
         android:id="@+id/button"

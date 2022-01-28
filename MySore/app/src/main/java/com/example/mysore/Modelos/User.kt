@@ -1,8 +1,9 @@
 package com.example.mysore.Modelos
 
 data class User(
-    private var id: Int?,
-    private var name: String?,
-    private var surname: String?,
-    private var email: String,
+    var id: Int,
+    var name: String = "",
+    var surname: String = "",
+    var email: String,
+    var articles: List<Items>,
 )
