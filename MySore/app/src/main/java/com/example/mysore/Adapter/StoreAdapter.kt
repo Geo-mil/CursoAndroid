@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mysore.Connection.APIStore
@@ -13,7 +14,7 @@ import com.example.mysore.Modelos.Items
 import com.example.mysore.R
 import kotlin.math.roundToInt
 
-class StoreAdapter(private val dataset: List<Items>, private val context: Context):
+class StoreAdapter(private val dataset: ArrayList<Items>?, private val context: Context):
     RecyclerView.Adapter<StoreAdapter.ViewHolder>(){
 
     private lateinit var mListener: OnItemClickListener
@@ -47,6 +48,8 @@ class StoreAdapter(private val dataset: List<Items>, private val context: Contex
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
        val view = LayoutInflater.from(parent.context)
            .inflate(R.layout.item_store, parent, false)
+
+
         return ViewHolder(view, mListener)
     }
 
@@ -54,8 +57,8 @@ class StoreAdapter(private val dataset: List<Items>, private val context: Contex
         val randomPrice = (Math.random() * 1000).roundToInt()
         val priceText = "${randomPrice}"+"€"
         val actualPrice = APIStore().listaDeItems[position].precio
-        Glide.with(context).load(dataset[position].foto).into(holder.itemImage)
-        holder.nameText.text = dataset[position].nombre
+        Glide.with(context).load(dataset?.get(position)?.foto).into(holder.itemImage)
+        holder.nameText.text = dataset?.get(position)?.nombre
         if(actualPrice == 0) {
             APIStore().listaDeItems[position].precio = randomPrice
             holder.priceText.text = priceText
@@ -65,6 +68,6 @@ class StoreAdapter(private val dataset: List<Items>, private val context: Contex
 
     }
 
-    override fun getItemCount() = dataset.size
+    override fun getItemCount(): Int = dataset?.size!!
 
 }

@@ -10,24 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.add
-import com.example.mysore.Connection.APIStore
 import com.example.mysore.Interfaces.SupportFragmentManager
-import com.example.mysore.Modelos.Items
-import com.example.mysore.Modelos.User
 import com.example.mysore.Utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.google.gson.GsonBuilder
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import retrofit2.Call
-import java.io.IOException
 
 
 class StoreActivity : AppCompatActivity(), SupportFragmentManager {
@@ -45,7 +30,6 @@ class StoreActivity : AppCompatActivity(), SupportFragmentManager {
         val email = bundle?.get("User e-mail")
         Toast.makeText(this,email.toString()+" signed in", Toast.LENGTH_SHORT).show()
 
-        // TODO: aqui sacamos la lista de la compra del user
         //createUser(email.toString(), )// TODO: aqui se la añadimos al crear al user
 
         val SignOut = findViewById<Button>(R.id.button)

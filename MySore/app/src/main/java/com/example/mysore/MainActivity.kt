@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,"CANCELADO",Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun handleResult(completedTask: Task<GoogleSignInAccount>){
         try {
             val account: GoogleSignInAccount? =completedTask.getResult(ApiException::class.java)

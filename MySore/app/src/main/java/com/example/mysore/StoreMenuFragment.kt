@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mysore.Adapter.StoreAdapter
 import com.example.mysore.Connection.APIStore
 import com.example.mysore.Interfaces.SupportFragmentManager
+import com.example.mysore.Modelos.Items
 import java.io.IOException
 
 class StoreMenuFragment : Fragment() {
@@ -29,11 +31,6 @@ class StoreMenuFragment : Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        APIStore().sacardatos()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,13 +38,25 @@ class StoreMenuFragment : Fragment() {
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_store_menu, container, false)
 
+        APIStore().sacardatosV2 {
+            setRecyclerView()
+        }
+        // Create the observer which updates the UI.
+        //val nameObserver = Observer<ArrayList<Items>> { newName ->
+            // Update the UI, in this case, a TextView.
+        //    setRecyclerView()
+        //}
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        //APIStore().listaObservable.observe(this, nameObserver)
+
+
         return rootview
     }
 
     fun setRecyclerView(){
         val recyclerView = rootview.findViewById<RecyclerView>(R.id.store_recycler_view)
-        val adapter = StoreAdapter(APIStore().listaDeItems, this.requireContext())//aqui va la lista de digimones
-
+        //val adapter = StoreAdapter(APIStore().listaDeItems, this.requireContext())//aqui va la lista de digimones
+        val adapter = StoreAdapter(APIStore().listaObservable.value, this.requireContext())
         adapter.setOnItemClickListener(object: StoreAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 listener.setFragment(ShoopingCarMenuFragment(),

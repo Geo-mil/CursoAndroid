@@ -1,11 +1,14 @@
 package com.example.mysore.Connection
 
+import android.content.ClipData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.mysore.Adapter.StoreAdapter
 import com.example.mysore.Modelos.Items
 import com.example.mysore.StoreMenuFragment
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.CompletionHandler
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -22,6 +25,26 @@ class APIStore {
     private val TAG = "APIStore_jsonparse"
 
     fun sacardatos() {
+
+        val request = Request.Builder()
+            .url(BASE_URL)
+            .build()
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                // progress.visibility = View.GONE
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: Response) {
+                val str_response = response.body()!!.string()
+
+                json_to_item(str_response)
+            }
+        })
+    }
+
+    fun sacardatosV2(completionHandler: CompletionHandler) {
 
         val request = Request.Builder()
             .url(BASE_URL)
@@ -66,10 +89,18 @@ class APIStore {
 
             val newItem = Items(i,nombre,imagen,nivel,100)
             listaDeItems.add(newItem)
+            //listaObservable.add(newItem)
         }
-        StoreMenuFragment().setRecyclerView()
+        listaObservable.postValue(listaDeItems)
     }
 
     val listaDeItems = ArrayList<Items>()
+
+    val listaObservable : MutableLiveData<ArrayList<Items>> by lazy {
+        MutableLiveData<ArrayList<Items>>()
+    }
+
+    //val listaObservable = mutableListOf<Items>()
+
 
 }
