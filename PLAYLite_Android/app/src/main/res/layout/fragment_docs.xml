@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.DocsFragment">
+
+    <ImageView
+        android:id="@+id/imagen_manual_instalacion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/manual_instalacion"
+        app:layout_constraintEnd_toStartOf="@id/manual_instalacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/manual_instalacion"
+        app:srcCompat="@drawable/informes"
+        android:contentDescription="@string/manual_de_instalacion" />
+
+    <Button
+        android:id="@+id/manual_instalacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manual_de_instalacion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <ImageView
+        android:id="@+id/imagen_manual_pem"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/manual_pem"
+        app:layout_constraintEnd_toEndOf="@id/imagen_manual_instalacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/manual_pem"
+        app:srcCompat="@drawable/informes"
+        android:contentDescription="@string/manual_de_app" />
+
+    <Button
+        android:id="@+id/manual_pem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manual_de_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/manual_instalacion"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

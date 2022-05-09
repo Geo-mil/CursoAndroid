@@ -1175,11 +1175,11 @@ class CoraApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun apiServicesAppCoraGetCoraExtraDataGet(coraId: kotlin.Int?) : CoraExtraDataDto {
+    fun apiServicesAppCoraGetCoraExtraDataGet(coraId: kotlin.Int?) : CoraExtraDataDto? {
         val localVarResponse = apiServicesAppCoraGetCoraExtraDataGetWithHttpInfo(coraId = coraId)
 
         return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as CoraExtraDataDto
+            ResponseType.Success -> (localVarResponse as Success<*>).data as CoraExtraDataDto?
             ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
             ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
             ResponseType.ClientError -> {
@@ -1250,11 +1250,11 @@ class CoraApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun apiServicesAppCoraGetCoraGet(coraIdStr: kotlin.String?) : CoraListDto {
+    fun apiServicesAppCoraGetCoraGet(coraIdStr: kotlin.String?) : CoraListDto? {
         val localVarResponse = apiServicesAppCoraGetCoraGetWithHttpInfo(coraIdStr = coraIdStr)
 
         return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as CoraListDto
+            ResponseType.Success -> (localVarResponse as Success<*>).data as CoraListDto?
             ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
             ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
             ResponseType.ClientError -> {

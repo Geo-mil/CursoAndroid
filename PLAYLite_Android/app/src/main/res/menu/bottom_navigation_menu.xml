@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="Home"/>
+    <item
+        android:id="@+id/docu"
+        android:enabled="true"
+        android:icon="@drawable/ic_info"
+        android:title="Info"
+        android:iconTint="@color/bluemediumcolorprilux"/>
+    <item
+        android:id="@+id/user"
+        android:enabled="true"
+        android:icon="@drawable/ic_person"
+        android:title="User"
+        android:iconTint="@color/bluemediumcolorprilux"/>
+
+</menu>

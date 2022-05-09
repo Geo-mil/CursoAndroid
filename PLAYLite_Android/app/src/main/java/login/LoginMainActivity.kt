@@ -20,6 +20,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.example.playlite_android.MainActivity
 //import com.example.playlite_android.MainMenuHamburguer
 import com.example.playlite_android.R
 import com.example.playlite_android.databinding.ActivityMainLoginBinding
@@ -392,6 +393,8 @@ class LoginMainActivity : AppCompatActivity() {
                 binding.rememberPassword.isChecked = false
                 binding.rememberPassword.isSelected = false
             }
+            //para asignar al auto almacenado de las credenciales
+            LoginGlobalCredentials.user.isRememberAccess = binding.rememberPassword.isChecked
         }
 
         binding.loginButton.setOnClickListener {
@@ -504,7 +507,7 @@ class LoginMainActivity : AppCompatActivity() {
             }
             else
             {
-                binding.loginButton.setBackgroundResource(com.prilux.biblioteca.R.color.colorDefault)
+                binding.loginButton.setBackgroundResource(com.prilux.biblioteca.R.color.bluemediumcolorprilux)
             }
 
         }
@@ -522,7 +525,7 @@ class LoginMainActivity : AppCompatActivity() {
         }
         else
         {
-            binding.loginButton.setBackgroundResource(com.prilux.biblioteca.R.color.colorDefault)
+            binding.loginButton.setBackgroundResource(com.prilux.biblioteca.R.color.bluemediumcolorprilux)
         }
     }
 
@@ -556,7 +559,9 @@ class LoginMainActivity : AppCompatActivity() {
 //                val intent = Intent(this, MainMenuHamburguer::class.java).apply {
 //                    //putExtra(EXTRA_MESSAGE, message)
 //                }
-//                startActivity(intent)
+//                startActivity
+                val intent = Intent(this,MainActivity::class.java)
+                startActivity(intent)
 
             // Error en en la authentication
             } else {

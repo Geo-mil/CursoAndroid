@@ -13,3 +13,10 @@ fun parseCoraNamePlatformToBle(coraBleName: String, DbConstantName: String): Str
     parseName = coraBleName.replace(DbConstants.MODEL_PLATFORM, DbConstantName, false)
     return parseName
 }
+
+fun parseCoraNameBleToPlatform(coraBleName: String, DbConstantName: String, ): String {
+    var parseName = ""
+
+    parseName = coraBleName.replace(DbConstantName, DbConstants.MODEL_PLATFORM, false)
+    return parseName
+}

@@ -16,10 +16,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -59,7 +59,7 @@ class MainBleScanner : AppCompatActivity() {
         set(value) {
             field = value
             runOnUiThread {
-                val idButton = findViewById<Button>(R.id.scan_button)
+                val idButton = findViewById<TextView>(R.id.scan_button)
                 idButton.text = if (value) "Stop Scan" else "Start Scan"
             }
         }
@@ -93,7 +93,7 @@ class MainBleScanner : AppCompatActivity() {
         setContentView(view)
 
         if (findViewById<Button>(R.id.scan_button) != null) {
-            val scanButtonId: Button = findViewById(R.id.scan_button)
+            val scanButtonId: TextView = findViewById(R.id.scan_button)
             scanButtonId.setOnClickListener {
                 if (isScanning) {
                     stopBleScan()

@@ -56,11 +56,50 @@
     <string name="ble_menu_mantenimiento">Maintenance</string>
     <string name="ble_menu_mantenimiento_desc"></string>
 
+    <!-- ADD CMR -->
+    <string name="alias">Alias</string>
+    <string name="mac_address">Mac</string>
+    <string name="calle">Calle</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="cambiar_nombre">Cambiar Nombre</string>
+    <string name="nuevo_nombre">Nuevo Nombre</string>
+    <string name="fallo_geoloc">Parámetros de Geolocalización incorrectos</string>
+    <string name="fallo_alias">Campo Alias vacío</string>
+    <string name="fallo_cora_existe">Cora Existente en plataforma</string>
+    <string name="fallo_cora_upload_http">Problema almacenamiento</string>
+    <string name="fallo_cora_get_id_http">Problema Descarga el Id Cora </string>
+    <string name="fallo_cora_upload_xtra_data">Problema almacenando XtraData</string>
+    <string name="configurar_comunicaciones">Desea configurar las comunicaciones!!!!!TODO:::::</string>
+
+    <!-- MENU BLE CMR -->
+    <string name="secuencias">Secuencias</string>
+    <string name="def_secuencias">Configurar Secuencias</string>
+    <string name="informes">Informes</string>
+    <string name="def_informes">Comportamiento Red</string>
+    <string name="comunicaciones">Comunicaciones</string>
+    <string name="def_comunicaciones">Configurar Red Móvil</string>
+    <string name="seguridad">Seguridad</string>
+    <string name="def_seguridad">Configurar Claves</string>
+    <string name="avanzado">Avanzado</string>
+    <string name="def_avanzado">Opciones Avanzadas</string>
+    <string name="reloj_astronomico">Reloj Astronómico</string>
+    <string name="def_reloj_astronomico">Configurar Encendidos y apagados</string>
+
+    <string name="calendario_actualizado">Calendario Actualizado</string>
+
+    <!-- MENU BLE COMUNICACIONES -->
+    <string name="ip">IP</string>
+    <string name="puerto">Puerto</string>
+    <string name="pin">Pin</string>
+    <string name="apn">APN</string>
+
+
     <!-- CONTENT DESC -->
     <string name="content_desc_generic">Content</string>
 
 
     <!-- Bluetooth -->
+    <string name="ble_scanner">Escaneando</string>
     <string name="conectando_a_dispositivo">Conectando a dispositivo.</string>
     <string name="conectado">Conectado.</string>
     <string name="desconectando">Desconectado.</string>
