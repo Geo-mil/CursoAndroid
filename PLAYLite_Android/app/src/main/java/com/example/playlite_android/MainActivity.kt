@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         //accedemos al fragment principal al crear la activity
-        openFragment(LiteListFragment.newInstance("",""))
+        openFragment(LiteListFragment.newInstance())
 
         //dependiendo de la selección en el menú inferior accedemos a un fragment o a otro
         bottomBar.setOnItemSelectedListener { item ->
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> {
                     // Respond to navigation item 1 click
                     if (savedInstanceState == null) {
-                            openFragment(LiteListFragment.newInstance("",""))
+                            openFragment(LiteListFragment.newInstance())
                     }
                     true
                 }

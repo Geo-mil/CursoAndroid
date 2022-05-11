@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.playlite_android.R
+import global.login.LoginGlobalCredentials
+import global.login.LoginUserClass
 import login.LoginMainActivity
 
 /**

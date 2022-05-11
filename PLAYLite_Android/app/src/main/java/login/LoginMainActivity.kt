@@ -34,6 +34,7 @@ import org.openapitools.client.infrastructure.ClientException
 import org.openapitools.client.infrastructure.ServerException
 import org.openapitools.client.models.AuthenticateModel
 import org.openapitools.client.models.IsTenantAvailableInput
+import progressbar.progressBarStatus
 import java.io.IOException
 
 
@@ -55,6 +56,12 @@ class LoginMainActivity : AppCompatActivity() {
 
     private var counter = 0
 
+    override fun onPause() {
+        super.onPause()
+        //Ocultar Barra
+        progressBarStatus(binding.indeterminateBar, false)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +72,9 @@ class LoginMainActivity : AppCompatActivity() {
 
         toolbar = findViewById(R.id.toolbar_login)
         setSupportActionBar(toolbar)
+
+        //Ocultar Barra
+        progressBarStatus(binding.indeterminateBar, false)
 
         //Compruebo permisos antes de adquirir
         verificarPermisos()
@@ -468,7 +478,7 @@ class LoginMainActivity : AppCompatActivity() {
         }
     }
     private fun startTimeCounter() {
-       // val countTime: TextView = findViewById(R.id.countTime)
+        progressBarStatus(binding.indeterminateBar, true)
         object : CountDownTimer(1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                // countTime.text = counter.toString()
@@ -550,21 +560,23 @@ class LoginMainActivity : AppCompatActivity() {
             // 3 - Generamos el token de autenticación
             //mensajeAuth, errorCode, success =
                 errorHandler  = authenticate()
+            //Ocultar Barra
+            progressBarStatus(binding.indeterminateBar, false)
             if (errorHandler.success == true) {
-                //TODO: GO TO Main Menu
+
                 if(LoginGlobalCredentials.user.isRememberAccess) {
                     LoginUserClass().setCurrentUser(this, LoginGlobalCredentials.user)
+                }else {
+                    LoginUserClass().clearUser(this)
                 }
-// J, pendiente de añadir intent a otra activity
-//                val intent = Intent(this, MainMenuHamburguer::class.java).apply {
-//                    //putExtra(EXTRA_MESSAGE, message)
-//                }
-//                startActivity
+
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
 
             // Error en en la authentication
             } else {
+                //Ocultar Barra
+                progressBarStatus(binding.indeterminateBar, false)
                 if (errorHandler.message?.isEmpty() == false) {
                     showAlert(errorHandler.message!!)
                 }

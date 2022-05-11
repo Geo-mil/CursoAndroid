@@ -31,7 +31,7 @@ data class LoginUserClass(
 
     fun setCurrentUser(context: Context, user: LoginUserClass) {
         val sharedPref = context.getSharedPreferences(AppPreferences.valueOf(AppPreferences.PREFERENCE_FILE_KEY.toString()).value, Context.MODE_PRIVATE)
-        sharedPref.edit { this
+        sharedPref.edit {
             putBoolean(AppPreferences.valueOf(AppPreferences.PREFERENCE_REMEMBER_LOGIN_KEY.toString()).value, user.isRememberAccess)
             putString(AppPreferences.valueOf(AppPreferences.PREFERENCE_LOGIN_NAME_KEY.toString()).value, user.user)
             putString(AppPreferences.valueOf(AppPreferences.PREFERENCE_LOGIN_PASSWORD_KEY.toString()).value, user.password)
@@ -40,5 +40,15 @@ data class LoginUserClass(
         }
     }
 
+    fun clearUser(context: Context) {
+        val sharedPref = context.getSharedPreferences(AppPreferences.valueOf(AppPreferences.PREFERENCE_FILE_KEY.toString()).value, Context.MODE_PRIVATE)
+        sharedPref.edit {
+            putBoolean(AppPreferences.valueOf(AppPreferences.PREFERENCE_REMEMBER_LOGIN_KEY.toString()).value, false)
+            putString(AppPreferences.valueOf(AppPreferences.PREFERENCE_LOGIN_NAME_KEY.toString()).value, "")
+            putString(AppPreferences.valueOf(AppPreferences.PREFERENCE_LOGIN_PASSWORD_KEY.toString()).value, "")
+            putString(AppPreferences.valueOf(AppPreferences.PREFERENCE_LOGIN_TENANT_KEY.toString()).value, "")
+            this.apply()
+        }
+    }
 
 }

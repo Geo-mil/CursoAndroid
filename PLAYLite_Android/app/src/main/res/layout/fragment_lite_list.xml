@@ -5,15 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".fragments.LiteListFragment">
 
-    <TextView
-        android:text="Lista de Lites"
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_lites"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/cora_recycler_cell"/>
 
 </FrameLayout>
