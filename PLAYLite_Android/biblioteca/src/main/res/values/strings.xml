@@ -10,11 +10,13 @@
     <!-- BOTONES -->
     <string name="btn_aceptar">Accept</string>
     <string name="btn_cancelar">Cancel</string>
+    <string name="btn_añadir">Añadir</string>
     <!-- PROCESOS -->
     <string name="proceso_correcto">Process OK</string>
     <string name="proceso_fail">Process Failed</string>
     <string name="advertencia">Warning</string>
     <string name="campos_vacios">Empty Fields</string>
+    <string name="nuevos_dispositivos_detectados">Nuevos dispositivos detectados.</string>
 
     <!-- LOGIN AUTH -->
     <string name="login_text">Log In</string>

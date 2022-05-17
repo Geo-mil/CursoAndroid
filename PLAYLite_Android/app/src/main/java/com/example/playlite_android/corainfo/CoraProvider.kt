@@ -15,7 +15,7 @@ class CoraProvider {
         }
 
         if(file.canWrite()){
-            val rawdata = cora.nombre + ", " + cora.address + "\n"
+            val rawdata = cora.nombre + "," + cora.address + "\n"
             file.appendText(rawdata)
         }
 
@@ -31,7 +31,6 @@ class CoraProvider {
                 //rawdata = file.readLines().toString()
             }
         }
-
         return rawdata
     }
 

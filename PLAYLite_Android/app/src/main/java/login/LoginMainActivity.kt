@@ -1,10 +1,15 @@
 package login
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -15,6 +20,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
@@ -414,12 +420,6 @@ class LoginMainActivity : AppCompatActivity() {
             ) {
                 if (haConcedidoPermisos) {
                     runOnUiThread {
-//                        it.setBackgroundColor(
-//                            ContextCompat.getColor(
-//                                this,
-//                                com.prilux.biblioteca.R.color.colorselectedcell
-//                            )
-//                        )
                         Toast.makeText(applicationContext, "Por favor espere!!!" +
                                 "Realizando conexion Cloud." +
                                 "El proceso puede tardar", Toast.LENGTH_LONG)
@@ -696,19 +696,96 @@ class LoginMainActivity : AppCompatActivity() {
         alert.show()
     }
 
+    /***************************************************
+     * COMPROBACION DE PERMISOS GLOBALES
+     **************************************************/
+
+    private val LOCATION_PERMISSION_REQUEST_CODE = 2
+    private val PERMISSION_BLE = 100
+
+    private val bluetoothAdapter: BluetoothAdapter by lazy {
+        val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bluetoothManager.adapter
+    }
+
+//    private fun verificarPermisos() {
+//        if (checkSelfPermission(android.Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
+//            val permissions = arrayOf(android.Manifest.permission.INTERNET)
+//            requestPermissions(permissions, PERMISSION_CODE_INTERNET)
+//        } else{
+//            haConcedidoPermisos = true
+//        }
+//
+//    }
 
     private fun verificarPermisos() {
-            if (checkSelfPermission(android.Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
-                val permissions = arrayOf(android.Manifest.permission.INTERNET)
-                requestPermissions(permissions, PERMISSION_CODE_INTERNET)
-            } else{
-                haConcedidoPermisos = true
-            }
+        if (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
+            val permissions = arrayOf(Manifest.permission.INTERNET)
+            requestPermissions(permissions, PERMISSION_CODE_INTERNET)
+        } else{
+            verifyLocationPermissions()
+        }
 
     }
 
+    private fun verifyLocationPermissions() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ||
+            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED
+        ) {
+            val permissions = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+            requestPermissions(permissions, LOCATION_PERMISSION_REQUEST_CODE)
+        } else{
+            verifyBLEPermissions()
+        }
+
+    }
+
+    private fun verifyBLEPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED
+            ) {
+                val permissions = arrayOf(
+                    Manifest.permission.BLUETOOTH_ADVERTISE,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                )
+                requestPermissions(permissions, PERMISSION_BLE)
+            } else {
+                promptEnableBluetooth()
+                haConcedidoPermisos = true
+            }
+        } else {
+            if (checkSelfPermission(Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_DENIED) {
+                val permissions = arrayOf(Manifest.permission.BLUETOOTH)
+                requestPermissions(permissions, PERMISSION_BLE)
+            } else {
+                promptEnableBluetooth()
+                haConcedidoPermisos = true
+            }
+        }
+
+    }
+
+    private fun promptEnableBluetooth() {
+        if (!bluetoothAdapter.isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            requestBluetooth.launch(enableBtIntent)
+        }
+    }
 
     //Control de Permisos
+    private var requestBluetooth = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            verifyBLEPermissions()
+        }else{
+            Toast.makeText(this,"DENEGADO -AL HABILITAR ADAPTADOR BLE", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -721,11 +798,29 @@ class LoginMainActivity : AppCompatActivity() {
             PERMISSION_CODE_INTERNET -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     haConcedidoPermisos = true
+                    verifyLocationPermissions()
                 }else{
-                    Toast.makeText(this,"Permission denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Permission denied - INTERNET", Toast.LENGTH_SHORT).show()
+                }
+            }
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    verifyBLEPermissions()
+                }else{
+                    Toast.makeText(this,"Permission denied - LOCATION", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+            PERMISSION_BLE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    promptEnableBluetooth()
+                }else{
+                    Toast.makeText(this,"Permission denied - BLE", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
 
         }
     }
+
 }

@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.get
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlite_android.R
 
@@ -66,18 +67,22 @@ class CoraInfoAdapter (private val lista: ArrayList<CoraInfoItem>,
         holder.nombre.text = currentItem.nombre
         holder.coraID.text = currentItem.coraID
         holder.signal.text = currentItem.signal
-        //holder.address.text = currentItem.addressMap
+        holder.cellSelected = currentItem.isSelected == true
 
-        if (position == selected_cell) {
-            holder.itemView.background.setTint(ContextCompat.getColor(context, com.prilux.biblioteca.R.color.colorselectedcell))
-        } else {
+        if(currentItem.inRangeDetected == true ) {
             holder.itemView.background.setTint(Color.WHITE)
+            holder.switchOnOff.isGone = false
+        } else {
+            holder.itemView.background.setTint(ContextCompat.getColor(context, com.prilux.biblioteca.R.color.colorselectedcell))
+            holder.switchOnOff.isGone = true
         }
+
     }
 
     fun setCellPosition(position: Int) {
         selected_cell = position
-        notifyDataSetChanged()
+        //notifyDataSetChanged()
+        notifyItemChanged(position)
     }
 
     override fun getItemCount(): Int {

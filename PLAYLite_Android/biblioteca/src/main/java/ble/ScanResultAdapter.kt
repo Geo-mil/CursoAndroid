@@ -43,7 +43,7 @@ class ScanResultAdapter(
         fun bind(result: ScanResult) {
             device_name.text = result.device.name ?: "Unnamed"
             mac_address.text = result.device.address
-            signal_strength.text = "${result.rssi} dBm"
+            "${result.rssi} dBm".also { signal_strength.text = it }
             view.setOnClickListener {
                 onClickListener.invoke(result)
             }
